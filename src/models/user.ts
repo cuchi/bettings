@@ -41,10 +41,4 @@ const User = database.define<UserInstance, UserAttributes>('user', {
     }
 })
 
-User.sync()
-    .then(() => log.info('Users table created!'))
-    .catch(err => {
-        console.log(err)
-    })
-
 export default User

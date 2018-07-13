@@ -35,10 +35,4 @@ const Game = database.define<GameInstance, GameAttributes>('game', {
     }
 })
 
-Game.sync()
-    .then(() => log.info('Games table created!'))
-    .catch(err => {
-        console.log(err)
-    })
-
 export default Game

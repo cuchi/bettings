@@ -28,10 +28,4 @@ const Bet = database.define<BetInstance, BetAttributes>('bet', {
     }
 })
 
-Bet.sync()
-    .then(() => log.info('Bets table created!'))
-    .catch(err => {
-        console.log(err)
-    })
-
 export default Bet
