@@ -1,7 +1,6 @@
 import Sequelize, { Instance } from 'sequelize'
-import db from '../database'
+import database from '../database'
 import log from '../logger'
-import config from '../config'
 
 interface UserAttributes {
     id?: number,
@@ -16,7 +15,7 @@ interface UserAttributes {
 
 interface UserInstance extends UserAttributes, Instance<UserAttributes> {}
 
-const User = db.define<UserInstance, UserAttributes>('user', {
+const User = database.define<UserInstance, UserAttributes>('user', {
     name: {
         type: Sequelize.STRING,
         allowNull: false
@@ -42,7 +41,7 @@ const User = db.define<UserInstance, UserAttributes>('user', {
     }
 })
 
-User.sync({ force: config.postgres.forceClean })
+User.sync()
     .then(() => log.info('Users table created!'))
     .catch(err => {
         console.log(err)

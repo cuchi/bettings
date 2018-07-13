@@ -1,0 +1,7 @@
+BEGIN;
+
+DROP TABLE bets;
+DROP TABLE games;
+DROP TABLE users;
+
+COMMIT;

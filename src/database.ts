@@ -1,12 +1,11 @@
 import Sequelize from 'sequelize'
 import log from './logger'
 import config from './config'
-import './models/relations'
 
-const { postgres: { host, database, user, password } } = config
+const { postgres } = config
 
 const options = {
-    host: host,
+    host: postgres.host,
     dialect: 'postgres',
     operatorsAliases: false,
 
@@ -18,7 +17,11 @@ const options = {
     }
 }
 
-const sequelize = new Sequelize(database, user, password, options)
+const sequelize = new Sequelize(
+    postgres.database,
+    postgres.user,
+    postgres.password,
+    options)
 
 sequelize
     .authenticate()

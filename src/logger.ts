@@ -1,8 +1,7 @@
-import winston from 'winston'
-const { format } = winston
+import { createLogger, transports, format } from 'winston'
 
-export default winston.createLogger({
-    transports: [new winston.transports.Console()],
+export default createLogger({
+    transports: [new transports.Console()],
     format: format.combine(
         format.colorize(),
         format.splat(),

@@ -1,7 +1,6 @@
 import Sequelize, { Instance } from 'sequelize'
-import db from '../database'
+import database from '../database'
 import log from '../logger'
-import config from '../config'
 
 interface GameAttributes {
     id?: number,
@@ -15,7 +14,7 @@ interface GameAttributes {
 
 interface GameInstance extends GameAttributes, Instance<GameAttributes> {}
 
-const Game = db.define<GameInstance, GameAttributes>('game', {
+const Game = database.define<GameInstance, GameAttributes>('game', {
     name: {
         type: Sequelize.STRING,
         allowNull: false
@@ -28,12 +27,15 @@ const Game = db.define<GameInstance, GameAttributes>('game', {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 1
+    },
+    createdBy: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: { model: 'users' }
     }
 })
 
-Game.findOne()
-
-Game.sync({ force: config.postgres.forceClean })
+Game.sync()
     .then(() => log.info('Games table created!'))
     .catch(err => {
         console.log(err)
