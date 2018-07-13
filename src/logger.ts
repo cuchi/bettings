@@ -1,10 +1,7 @@
-
-// @flow
-
-const winston = require('winston')
+import winston from 'winston'
 const { format } = winston
 
-module.exports = winston.createLogger({
+export default winston.createLogger({
     transports: [new winston.transports.Console()],
     format: format.combine(
         format.colorize(),

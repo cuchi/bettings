@@ -1,15 +1,12 @@
-
-// @flow
-
-const { evolve, pick, nAry, values } = require('ramda')
-const {
+import { evolve, pick, nAry, values } from 'ramda'
+import {
     NotFoundError,
     UnauthenticatedError,
     UnauthorizedError,
     ValidationError
-} = require('./errors')
-const bcrypt = require('bcrypt')
-const User = require('../models/user')
+} from './errors'
+import bcrypt from 'bcrypt'
+import User from '../models/user'
 
 const saltRounds = 10
 
@@ -25,7 +22,7 @@ const ensureIsAdmin = async id => {
     }
 }
 
-const create = async (inputValues: *) => {
+export const create = async (inputValues: any) => {
     if (!inputValues.password) {
         throw new ValidationError('Missing password!')
     }
@@ -40,7 +37,7 @@ const create = async (inputValues: *) => {
     return User.create(user)
 }
 
-const authenticate = async (email: string, password: string) => {
+export const authenticate = async (email: string, password: string) => {
     const user = await User.findOne({
         attributes: ['id', 'password'],
         where: { email } })
@@ -52,7 +49,7 @@ const authenticate = async (email: string, password: string) => {
     throw new UnauthenticatedError()
 }
 
-const update = async (currentUserId: number, id: number, inputValues: any) => {
+export const update = async (currentUserId: number, id: number, inputValues: any) => {
     if (currentUserId !== id) {
         await ensureIsAdmin(currentUserId)
     }
@@ -75,7 +72,7 @@ const update = async (currentUserId: number, id: number, inputValues: any) => {
     }
 }
 
-const remove = async (currentUserId: number, id: number) => {
+export const remove = async (currentUserId: number, id: number) => {
     await ensureIsAdmin(currentUserId)
 
     if ((await User.destroy(({ where: { id } }))) === 0) {
@@ -83,7 +80,7 @@ const remove = async (currentUserId: number, id: number) => {
     }
 }
 
-const find = async (id: number) => {
+export const find = async (id: number) => {
     const user = await User.findOne({ where: { id } })
 
     if (!user) {
@@ -93,6 +90,4 @@ const find = async (id: number) => {
     return user
 }
 
-const findAll = nAry(0, User.findAll.bind(User))
-
-module.exports = { authenticate, create, update, remove, find, findAll }
+export const findAll = nAry(0, User.findAll.bind(User))

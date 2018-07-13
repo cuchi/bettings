@@ -1,9 +1,9 @@
+import Sequelize from 'sequelize'
+import log from './logger'
+import config from './config'
+import './models/relations'
 
-// @flow
-
-const Sequelize = require('sequelize')
-const log = require('./logger')
-const { postgres: { host, database, user, password } } = require('./config')
+const { postgres: { host, database, user, password } } = config
 
 const options = {
     host: host,
@@ -29,4 +29,4 @@ sequelize
         log.error('Unable to connect to the database:', err)
     })
 
-module.exports = sequelize
+export default sequelize

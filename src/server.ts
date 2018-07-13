@@ -1,12 +1,9 @@
-
-// @flow
-
-const express = require('express')
-const bodyParser = require('body-parser')
-const session = require('express-session')
-const { apiRouter } = require('./api')
-const log = require('./logger')
-const config = require('./config')
+import express from 'express'
+import bodyParser from 'body-parser'
+import session from 'express-session'
+import { apiRouter } from './api'
+import log from './logger'
+import config from './config'
 
 const server = express()
 

@@ -1,9 +1,6 @@
-
-// @flow
-
 const localhost = '127.0.0.1'
 
-module.exports = {
+export default {
     cookieSecret: process.env.COOKIE_SECRET || 'foo',
 
     postgres: {

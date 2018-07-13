@@ -1,24 +1,19 @@
+import { Router } from 'express'
+import uuid from 'uuid/v4'
+import { HttpError, NotFoundError, resolveError } from './control/errors'
+import log from './logger'
+import * as user from './control/user'
+import * as bet from './control/bet'
+import * as game from './control/game'
 
-// @flow
-
-const { Router } = require('express')
-const uuid = require('uuid/v4')
-const { NotFoundError, resolveError } = require('./control/errors')
-const log = require('./logger')
-const user = require('./control/user')
-const bet = require('./control/bet')
-const game = require('./control/game')
-
-import type { $Request, $Response } from 'express'
-
-const handleRoute = (fn: $Request => Promise<any>) =>
-    async (req: $Request, res: $Response) => {
+const handleRoute = fn =>
+    async (req, res) => {
         try {
             res.json(await fn(req))
         } catch (rawError) {
             const error = resolveError(rawError)
 
-            if (error.status) {
+            if (error instanceof HttpError) {
                 const { name, message } = error
                 res.status(Number(error.status)).json({ name, message })
             } else {
@@ -40,7 +35,7 @@ const authentication = async (req, res, next) => {
     }
 }
 
-const login = async (req: $Request) => {
+const login = async req => {
     const id = await user.authenticate(req.body.email, req.body.password)
     const token = uuid()
     req.session.token = token
@@ -55,8 +50,8 @@ const logout = async req => {
     delete sessions[req.session.token]
 }
 
-const apiRouter = () => {
-    const api = new Router()
+export const apiRouter = () => {
+    const api = Router()
 
     // Users
     api.post('/users', handleRoute(req =>
@@ -99,5 +94,3 @@ const apiRouter = () => {
 
     return api
 }
-
-module.exports = { handleRoute, apiRouter }
