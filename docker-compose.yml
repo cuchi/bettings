@@ -1,0 +1,22 @@
+version: "2"
+
+services:
+  app:
+    image: node:8
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/app
+    working_dir: /app
+    environment:
+      - POSTGRES_HOST=postgres
+    entrypoint: node dist/server.js
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:10.4
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=123456
