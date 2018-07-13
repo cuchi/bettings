@@ -18,5 +18,5 @@ server.use(session({
 
 server.use(apiRouter())
 
-server.listen(3000, () => log.info('Listening on port 3000'))
+server.listen(config.port , () => log.info(`Listening on port ${config.port}`))
 

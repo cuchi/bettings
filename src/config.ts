@@ -1,6 +1,7 @@
 const localhost = '127.0.0.1'
 
 export default {
+    port: Number(process.env.PORT) || 8080,
     cookieSecret: process.env.COOKIE_SECRET || 'foo',
 
     postgres: {

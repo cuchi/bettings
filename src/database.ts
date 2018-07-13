@@ -26,7 +26,7 @@ const sequelize = new Sequelize(
 sequelize
     .authenticate()
     .then(() => {
-        log.info('Connection has been established successfully.')
+        log.info(`Connected to ${postgres.user}@${postgres.database}!`)
     })
     .catch(err => {
         log.error('Unable to connect to the database:', err)

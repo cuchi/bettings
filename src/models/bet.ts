@@ -1,6 +1,5 @@
 import Sequelize, { Instance } from 'sequelize'
 import database from '../database'
-import log from '../logger'
 
 interface BetAttributes {
     id?: number,
