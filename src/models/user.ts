@@ -36,7 +36,16 @@ const User = database.define<UserInstance, UserAttributes>('user', {
     isAdmin: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
-        defaultValue: false
+        defaultValue: false,
+        field: 'is_admin'
+    },
+    createdAt: {
+        field: 'created_at',
+        type: Sequelize.DATE
+    },
+    updatedAt: {
+        field: 'updated_at',
+        type: Sequelize.DATE
     }
 })
 

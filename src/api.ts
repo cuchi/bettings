@@ -76,6 +76,9 @@ export const apiRouter = () => {
     api.get('/users', handleRoute(user.findAll))
 
     // Games
+    api.get('/games', handleRoute(req =>
+        game.findAll()))
+
     api.post('/games', handleRoute(req =>
         game.create(req.userId, req.body)))
 
@@ -84,7 +87,7 @@ export const apiRouter = () => {
 
     // Bets
     api.post('/games/:id/bets', handleRoute(req =>
-        bet.place(req.userId, req.body.gameId, req.body.value)))
+        bet.place(req.userId, req.params.id, req.body.value)))
 
     api.get('/games/:id/bets', handleRoute(req =>
         bet.findAllFromGame(req.params.id)))

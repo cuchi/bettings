@@ -5,7 +5,9 @@ interface BetAttributes {
     id?: number,
     value?: Date,
     placedBy?: number,
-    game?: number
+    game?: number,
+    createdAt?: Date,
+    updatedAt?: Date
 }
 
 interface BetInstance extends BetAttributes, Instance<BetAttributes> {}
@@ -18,12 +20,21 @@ const Bet = database.define<BetInstance, BetAttributes>('bet', {
     placedBy: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'users' }
+        references: { model: 'users' },
+        field: 'placed_by'
     },
     game: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: { model: 'games' }
+    },
+    createdAt: {
+        field: 'created_at',
+        type: Sequelize.DATE
+    },
+    updatedAt: {
+        field: 'updated_at',
+        type: Sequelize.DATE
     }
 })
 

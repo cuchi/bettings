@@ -20,7 +20,8 @@ const Game = database.define<GameInstance, GameAttributes>('game', {
     },
     timeLimit: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
+        field: 'time_limit'
     },
     score: {
         type: Sequelize.INTEGER,
@@ -30,7 +31,16 @@ const Game = database.define<GameInstance, GameAttributes>('game', {
     createdBy: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'users' }
+        references: { model: 'users' },
+        field: 'created_by'
+    },
+    createdAt: {
+        field: 'created_at',
+        type: Sequelize.DATE
+    },
+    updatedAt: {
+        field: 'updated_at',
+        type: Sequelize.DATE
     }
 })
 

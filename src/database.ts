@@ -4,7 +4,7 @@ import config from './config'
 
 const { postgres } = config
 
-const options = {
+const options: Sequelize.Options = {
     host: postgres.host,
     dialect: 'postgres',
     operatorsAliases: false,

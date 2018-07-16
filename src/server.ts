@@ -1,11 +1,15 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import session from 'express-session'
+import morgan from 'morgan'
 import { apiRouter } from './api'
 import log from './logger'
 import config from './config'
 
 const server = express()
+
+server.use(morgan('dev', { stream: {
+    write: message => log.info(message.trim()) } }))
 
 server.use(bodyParser.json())
 

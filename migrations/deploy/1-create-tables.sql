@@ -6,30 +6,30 @@ CREATE TABLE users (
     "email" VARCHAR(2000) NOT NULL UNIQUE,
     "password" VARCHAR(100) NOT NULL,
     "score" INTEGER NOT NULL DEFAULT 0,
-    "isAdmin" BOOLEAN NOT NULL DEFAULT false,
-    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL,
-    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL,
+    "is_admin" BOOLEAN NOT NULL DEFAULT false,
+    "created_at" TIMESTAMP WITH TIME ZONE NOT NULL,
+    "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL,
     PRIMARY KEY ("id")
 );
 
 CREATE TABLE games (
     "id" SERIAL,
     "name" VARCHAR(255) NOT NULL,
-    "timeLimit" TIMESTAMP WITH TIME ZONE NOT NULL,
+    "time_limit" TIMESTAMP WITH TIME ZONE NOT NULL,
     "score" INTEGER NOT NULL DEFAULT 1,
-    "createdBy" INTEGER NOT NULL REFERENCES "users" ("id"),
-    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL,
-    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL,
+    "created_by" INTEGER NOT NULL REFERENCES "users" ("id"),
+    "created_at" TIMESTAMP WITH TIME ZONE NOT NULL,
+    "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL,
     PRIMARY KEY ("id")
 );
 
 CREATE TABLE bets (
     "id" SERIAL,
     "value" TIMESTAMP WITH TIME ZONE NOT NULL,
-    "placedBy" INTEGER NOT NULL REFERENCES "users" ("id"),
+    "placed_by" INTEGER NOT NULL REFERENCES "users" ("id"),
     "game" INTEGER NOT NULL REFERENCES "games" ("id"),
-    "createdAt" TIMESTAMP WITH TIME ZONE NOT NULL,
-    "updatedAt" TIMESTAMP WITH TIME ZONE NOT NULL,
+    "created_at" TIMESTAMP WITH TIME ZONE NOT NULL,
+    "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL,
     PRIMARY KEY ("id")
 );
 

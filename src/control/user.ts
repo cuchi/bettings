@@ -12,7 +12,7 @@ const saltRounds = 10
 
 const updatableFields = ['name', 'email', 'password']
 
-const ensureIsAdmin = async id => {
+export const ensureIsAdmin = async id => {
     const currentUser = await User.findOne({
         attributes: ['isAdmin'],
         where: { id } })
