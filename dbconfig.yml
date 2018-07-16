@@ -1,6 +1,0 @@
-
-development:
-  dialect: postgres
-  datasource: 'postgres:123456@127.0.0.1/postgres'
-  dir: migrations
-  table: migrations

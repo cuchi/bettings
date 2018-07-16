@@ -2,9 +2,9 @@ version: "2"
 
 services:
   app:
-    image: node:8
+    image: node:8-stretch
     ports:
-      - "3000:3000"
+      - "8080:8080"
     volumes:
       - ./:/app
     working_dir: /app
