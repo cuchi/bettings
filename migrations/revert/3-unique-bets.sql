@@ -1,5 +1,5 @@
 BEGIN;
 
-
+ALTER TABLE bets DROP CONSTRAINT unique_bets;
 
 COMMIT;

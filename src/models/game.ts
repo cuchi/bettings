@@ -34,6 +34,13 @@ const Game = database.define<GameInstance, GameAttributes>('game', {
         references: { model: 'users' },
         field: 'created_by'
     },
+    closedAt: {
+        type: Sequelize.DATE,
+        field: 'closed_at'
+    },
+    result: {
+        type: Sequelize.DATE
+    },
     createdAt: {
         field: 'created_at',
         type: Sequelize.DATE

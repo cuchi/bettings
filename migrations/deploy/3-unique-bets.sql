@@ -1,5 +1,6 @@
 BEGIN;
 
+-- Drop all duplicated bets excluding the first one
 DELETE FROM bets a
     USING (
         SELECT MIN(created_at) as created_at, placed_by, game FROM bets
@@ -9,6 +10,6 @@ DELETE FROM bets a
     AND a.game = b.game
     AND a.created_at <> b.created_at;
 
-ALTER TABLE bets ADD UNIQUE (placed_by, game);
+ALTER TABLE bets ADD CONSTRAINT unique_bets UNIQUE (placed_by, game);
 
 COMMIT;
