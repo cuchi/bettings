@@ -1,17 +1,21 @@
 import Sequelize, { Instance } from 'sequelize'
 import database from '../database'
 
-interface GameAttributes {
-    id?: number,
-    name?: string,
-    timeLimit?: Date,
-    score?: number,
-    createdBy?: number,
-    createdAt?: Date,
-    updatedAt?: Date
+interface Game {
+    id: number,
+    name: string,
+    timeLimit: Date,
+    score: number,
+    createdBy: number,
+    closedAt: Date,
+    result: Date,
+    createdAt: Date,
+    updatedAt: Date
 }
 
-interface GameInstance extends GameAttributes, Instance<GameAttributes> {}
+type GameAttributes = Partial<Game>
+
+export interface GameInstance extends Game, Instance<Game> {}
 
 const Game = database.define<GameInstance, GameAttributes>('game', {
     name: {

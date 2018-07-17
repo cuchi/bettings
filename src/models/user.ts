@@ -1,18 +1,20 @@
 import Sequelize, { Instance } from 'sequelize'
 import database from '../database'
 
-interface UserAttributes {
-    id?: number,
-    name?: string,
-    email?: string,
-    password?: string,
-    score?: number,
-    isAdmin?: boolean,
-    createdAt?: Date,
-    updatedAt?: Date
+interface User {
+    id: number,
+    name: string,
+    email: string,
+    password: string,
+    score: number,
+    isAdmin: boolean,
+    createdAt: Date,
+    updatedAt: Date
 }
 
-interface UserInstance extends UserAttributes, Instance<UserAttributes> {}
+type UserAttributes = Partial<User>
+
+interface UserInstance extends User, Instance<User> {}
 
 const User = database.define<UserInstance, UserAttributes>('user', {
     name: {

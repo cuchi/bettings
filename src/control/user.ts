@@ -7,15 +7,17 @@ import {
 } from './errors'
 import bcrypt from 'bcrypt'
 import User from '../models/user'
+import { Transaction } from 'sequelize'
 
 const saltRounds = 10
 
 const updatableFields = ['name', 'email', 'password']
 
-export const ensureIsAdmin = async id => {
+export const ensureIsAdmin = async (id: number, transaction?: Transaction) => {
     const currentUser = await User.findOne({
         attributes: ['isAdmin'],
-        where: { id } })
+        where: { id },
+        transaction })
 
     if (!currentUser.isAdmin) {
         throw new UnauthorizedError('User is not an admin')
