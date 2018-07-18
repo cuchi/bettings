@@ -1,13 +1,13 @@
-import { evolve, pick, nAry, values } from 'ramda'
+import bcrypt from 'bcrypt'
+import { evolve, nAry, pick, values } from 'ramda'
+import { Transaction } from 'sequelize'
+import User from '../models/user'
 import {
     NotFoundError,
     UnauthenticatedError,
     UnauthorizedError,
     ValidationError
 } from './errors'
-import bcrypt from 'bcrypt'
-import User from '../models/user'
-import { Transaction } from 'sequelize'
 
 const saltRounds = 10
 
@@ -19,7 +19,7 @@ export const ensureIsAdmin = async (id: number, transaction?: Transaction) => {
         where: { id },
         transaction })
 
-    if (!currentUser.isAdmin) {
+    if (currentUser && !currentUser.isAdmin) {
         throw new UnauthorizedError('User is not an admin')
     }
 }
@@ -41,7 +41,7 @@ export const create = async (inputValues: any) => {
 
 export const authenticate = async (email: string, password: string) => {
     const user = await User.findOne({
-        attributes: ['id', 'password'],
+        attributes: ['id', `password`],
         where: { email } })
 
     if (user && await bcrypt.compare(password, user.password)) {
@@ -51,7 +51,11 @@ export const authenticate = async (email: string, password: string) => {
     throw new UnauthenticatedError()
 }
 
-export const update = async (currentUserId: number, id: number, inputValues: any) => {
+export async function update(
+    currentUserId: number,
+    id: number,
+    inputValues: any
+) {
     if (currentUserId !== id) {
         await ensureIsAdmin(currentUserId)
     }

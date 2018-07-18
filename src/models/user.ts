@@ -14,7 +14,7 @@ interface User {
 
 type UserAttributes = Partial<User>
 
-interface UserInstance extends User, Instance<User> {}
+export interface UserInstance extends User, Instance<User> {}
 
 const User = database.define<UserInstance, UserAttributes>('user', {
     name: {

@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize'
-import log from './logger'
 import config from './config'
+import log from './logger'
 
 const { postgres } = config
 

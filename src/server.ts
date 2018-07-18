@@ -1,10 +1,10 @@
-import express from 'express'
 import bodyParser from 'body-parser'
+import express from 'express'
 import session from 'express-session'
 import morgan from 'morgan'
 import { apiRouter } from './api'
-import log from './logger'
 import config from './config'
+import log from './logger'
 
 const server = express()
 
@@ -14,13 +14,12 @@ server.use(morgan('dev', { stream: {
 server.use(bodyParser.json())
 
 server.use(session({
-    secret: config.cookieSecret,
     name: 'app-session-id',
     resave: true,
-    saveUninitialized: false
+    saveUninitialized: false,
+    secret: config.cookieSecret
 }))
 
 server.use(apiRouter())
 
 server.listen(config.port , () => log.info(`Listening on port ${config.port}`))
-

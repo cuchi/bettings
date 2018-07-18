@@ -1,0 +1,50 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+        "max-line-length": {
+            "options": 80,
+            "severity": "warning"
+        },
+        "no-unsafe-any": {
+            "severity": "warning"
+        },
+        "semicolon": [true, "never"],
+        "quotemark": [true, "single"],
+        "arrow-parens": [true, "ban-single-arg-parens"],
+        "trailing-comma": [true, { "multiline": "never", "singleline": "never" }],
+        "object-literal-sort-keys": false,
+        "interface-name": [true, "never-prefix"],
+        "max-classes-per-file": false,
+        "indent": [true, "spaces", 4],
+        "linebreak-style": [true, "LF"],
+        "no-unnecessary-type-assertion": true,
+        "no-console": [true],
+        "no-construct": true,
+        "cyclomatic-complexity": [true, 5],
+        "deprecation": true,
+        "prefer-const": true,
+        "arrow-return-shorthand": [true, "multiline"],
+        "comment-format": [true, "check-space", "check-uppercase"],
+        "encoding": true,
+        "interface-over-type-literal": true,
+        "prefer-template": true,
+        "prefer-switch": [true, {"min-cases": 2}],
+        "no-boolean-literal-compare": true,
+        "file-name-casing": [true, "kebab-case"],
+        "strict-type-predicates": true,
+        "prefer-object-spread": true,
+        "no-void-expression": true,
+        "no-string-literal": true,
+        "no-invalid-template-strings": true,
+        "no-floating-promises": [true, "Bluebird"],
+        "return-undefined": true,
+        "space-before-function-paren": [true, {"anonymous": "always", "named": "never", "asyncArrow": "always"}],
+        "adjacent-overload-signatures": true,
+        "no-inferrable-types": true
+    },
+    "rulesDirectory": []
+}

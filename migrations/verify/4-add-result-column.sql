@@ -1,0 +1,5 @@
+BEGIN;
+
+SELECT result FROM games LIMIT 0;
+
+ROLLBACK;

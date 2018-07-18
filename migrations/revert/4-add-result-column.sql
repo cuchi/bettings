@@ -1,0 +1,5 @@
+BEGIN;
+
+ALTER TABLE games DROP COLUMN result;
+
+COMMIT;

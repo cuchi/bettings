@@ -16,14 +16,14 @@ export interface BetInstance extends Bet, Instance<Bet> {}
 
 const Bet = database.define<BetInstance, BetAttributes>('bet', {
     value: {
-        type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
+        type: Sequelize.DATE
     },
     placedBy: {
-        type: Sequelize.INTEGER,
         allowNull: false,
+        field: 'placed_by',
         references: { model: 'users' },
-        field: 'placed_by'
+        type: Sequelize.INTEGER
     },
     game: {
         type: Sequelize.INTEGER,

@@ -1,13 +1,18 @@
-import { Router } from 'express'
-import uuid from 'uuid/v4'
-import { HttpError, NotFoundError, resolveError } from './control/errors'
-import log from './logger'
-import * as user from './control/user'
+import { NextFunction, Request, Response, Router } from 'express'
+import { path } from 'ramda'
+import uuid from 'uuid'
 import * as bet from './control/bet'
+import {
+    HttpError, NotFoundError, resolveError, UnauthenticatedError
+} from './control/errors'
 import * as game from './control/game'
+import * as user from './control/user'
+import log from './logger'
 
-const handleRoute = fn =>
-    async (req, res) => {
+type HandlerFn = (req: Request) => PromiseLike<any>
+
+function handleRoute(fn: HandlerFn) {
+    return async (req: Request, res: Response) => {
         try {
             res.json(await fn(req))
         } catch (rawError) {
@@ -17,37 +22,53 @@ const handleRoute = fn =>
                 const { name, message } = error
                 res.status(Number(error.status)).json({ name, message })
             } else {
-                log.error(error.stack)
+                log.error(error.stack || error.message)
                 res.status(500).json({ name: 'Internal Server Error' })
             }
         }
     }
+}
 
-const sessions = {}
+const sessions: { [token: string]: number } = {}
 
-const authentication = async (req, res, next) => {
-    req.userId = sessions[req.session.token]
+async function authentication(req: Request, res: Response, next: NextFunction) {
+    if (!req.session) {
+        return res.sendStatus(403)
+    }
 
-    if (req.userId) {
+    const userId = sessions[req.session.token]
+
+    if (userId) {
+        req.session.userId = userId
         next()
     } else {
         res.sendStatus(403)
     }
 }
 
-const login = async req => {
+const login = async (req: Request) => {
     const id = await user.authenticate(req.body.email, req.body.password)
-    const token = uuid()
-    req.session.token = token
-    sessions[token] = id
+    const token = uuid.v4()
+
+    if (req.session) {
+        req.session.token = token
+        sessions[token] = id
+    }
 }
 
-const logout = async req => {
-    if (!req.session.token) {
-        throw new NotFoundError()
+const logout = async (req: Request) => {
+    if (req.session && req.session.token) {
+        delete sessions[req.session.token]
     }
+    throw new NotFoundError()
+}
 
-    delete sessions[req.session.token]
+function getUserId(req: Request) {
+    const userId = path(['session', 'userId'], req)
+    if (!userId) {
+        throw new UnauthenticatedError()
+    }
+    return Number(userId)
 }
 
 export const apiRouter = () => {
@@ -65,10 +86,10 @@ export const apiRouter = () => {
 
     // Users
     api.patch('/users/:id', handleRoute(req =>
-        user.update(req.userId, req.params.id, req.body)))
+        user.update(getUserId(req), req.params.id, req.body)))
 
     api.delete('/users/:id', handleRoute(req =>
-        user.remove(req.userId, req.params.id)))
+        user.remove(getUserId(req), req.params.id)))
 
     api.get('/users/:id', handleRoute(req =>
         user.find(req.params.id)))
@@ -76,18 +97,20 @@ export const apiRouter = () => {
     api.get('/users', handleRoute(user.findAll))
 
     // Games
-    api.get('/games', handleRoute(req =>
-        game.findAll()))
+    api.get('/games', handleRoute(req => game.findAll()))
 
     api.post('/games', handleRoute(req =>
-        game.create(req.userId, req.body)))
+        game.create(getUserId(req), req.body)))
 
     api.delete('/games/:id', handleRoute(req =>
-        game.remove(req.userId, req.params.id)))
+        game.remove(getUserId(req), req.params.id)))
+
+    api.put('/games/:id', handleRoute(req =>
+        game.close(getUserId(req), req.params.id, req.body.result)))
 
     // Bets
     api.post('/games/:id/bets', handleRoute(req =>
-        bet.place(req.userId, req.params.id, req.body.value)))
+        bet.place(getUserId(req), req.params.id, req.body.value)))
 
     api.get('/games/:id/bets', handleRoute(req =>
         bet.findAllFromGame(req.params.id)))

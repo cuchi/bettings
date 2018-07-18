@@ -4,3 +4,4 @@
 1-create-tables 2018-07-13T21:28:05Z Paulo Henrique Cuchi <paulo.cuchi@gmail.com> # Create initial tables
 2-add-closed-column 2018-07-16T17:57:43Z Paulo Henrique Cuchi <paulo.cuchi@gmail.com> # Add closedAt column to the games table
 3-unique-bets 2018-07-16T18:41:10Z Paulo Henrique Cuchi <paulo.cuchi@gmail.com> # Create unique indexes for bets
+4-add-result-column 2018-07-17T21:54:24Z Paulo Henrique Cuchi <paulo.cuchi@gmail.com> # Add result column to the game table
