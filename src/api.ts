@@ -20,6 +20,7 @@ function handleRoute(fn: HandlerFn) {
 
             if (error instanceof HttpError) {
                 const { name, message } = error
+                log.warn(error.message)
                 res.status(Number(error.status)).json({ name, message })
             } else {
                 log.error(error.stack || error.message)
@@ -80,6 +81,8 @@ export const apiRouter = () => {
 
     // Sessions
     api.post('/sessions', handleRoute(login))
+
+    api.get('/status', handleRoute(async req => ({ message: 'It works!' })))
 
     // Authenticated area
     api.use(authentication)

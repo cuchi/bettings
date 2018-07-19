@@ -14,7 +14,9 @@ const options: Sequelize.Options = {
         min: 0,
         acquire: 30000,
         idle: 10000
-    }
+    },
+
+    logging: log.debug.bind(log)
 }
 
 const sequelize = new Sequelize(

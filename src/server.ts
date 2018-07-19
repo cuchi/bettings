@@ -8,7 +8,7 @@ import log from './logger'
 
 const server = express()
 
-server.use(morgan('dev', { stream: {
+server.use(morgan(config.logs.httpStyle, { stream: {
     write: message => log.info(message.trim()) } }))
 
 server.use(bodyParser.json())
@@ -22,4 +22,9 @@ server.use(session({
 
 server.use(apiRouter())
 
-server.listen(config.port , () => log.info(`Listening on port ${config.port}`))
+export const serverIsReady = new Promise(resolve => {
+    server.listen(config.port , () => {
+        log.info(`Listening on port ${config.port}`)
+        resolve()
+    })
+})
