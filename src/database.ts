@@ -1,8 +1,18 @@
+import { Pool } from 'pg'
 import Sequelize from 'sequelize'
 import config from './config'
 import log from './logger'
 
 const { postgres } = config
+
+export const createPool = () => new Pool({
+    host: postgres.host,
+    database: postgres.database,
+    user: postgres.user,
+    password: postgres.password,
+    max: 10,
+    min: 1
+})
 
 const options: Sequelize.Options = {
     host: postgres.host,

@@ -76,7 +76,7 @@ export const close = (userId: number, gameId: number, result: any) =>
             { closedAt: new Date(), result },
             { where: { id: gameId }, transaction })
 
-        return all([updateScore(game, result, transaction)])
+        return all([updateScore(game, result, transaction), updateGame])
     })
 
 export const findAll = () =>

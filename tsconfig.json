@@ -6,6 +6,7 @@
     "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
+    "noUnusedLocals": true,
     "lib": [
       "es2018",
       "dom",
