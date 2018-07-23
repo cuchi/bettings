@@ -96,4 +96,6 @@ export const find = async (id: number) => {
     return user
 }
 
+export const getCurrent = (id: number) => User.findOne({ where: { id } })
+
 export const findAll = nAry(0, User.findAll.bind(User))

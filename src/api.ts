@@ -1,6 +1,5 @@
-import { NextFunction, Request, Response, Router } from 'express'
+import { Request, Response, Router } from 'express'
 import { path } from 'ramda'
-import uuid from 'uuid'
 import * as bet from './control/bet'
 import {
     HttpError, NotFoundError, resolveError, UnauthenticatedError
@@ -30,38 +29,19 @@ function handleRoute(fn: HandlerFn) {
     }
 }
 
-const sessions: { [token: string]: number } = {}
-
-async function authentication(req: Request, res: Response, next: NextFunction) {
-    if (!req.session) {
-        return res.sendStatus(403)
-    }
-
-    const userId = sessions[req.session.token]
-
-    if (userId) {
-        req.session.userId = userId
-        next()
-    } else {
-        res.sendStatus(403)
-    }
-}
-
 const login = async (req: Request) => {
     const id = await user.authenticate(req.body.email, req.body.password)
-    const token = uuid.v4()
 
     if (req.session) {
-        req.session.token = token
-        sessions[token] = id
+        req.session.userId = id
     }
 }
 
 const logout = async (req: Request) => {
-    if (req.session && req.session.token) {
-        delete sessions[req.session.token]
+    if (!req.session) {
+        throw new NotFoundError()
     }
-    throw new NotFoundError()
+    req.session.destroy(() => { /* noop */ })
 }
 
 function getUserId(req: Request) {
@@ -75,24 +55,21 @@ function getUserId(req: Request) {
 export const apiRouter = () => {
     const api = Router()
 
+    // Status
+    api.get('/status', handleRoute(async req => ({ message: 'It works!' })))
+
     // Users
     api.post('/users', handleRoute(req =>
         user.create(req.body)))
 
-    // Sessions
-    api.post('/sessions', handleRoute(login))
-
-    api.get('/status', handleRoute(async req => ({ message: 'It works!' })))
-
-    // Authenticated area
-    api.use(authentication)
-
-    // Users
     api.patch('/users/:id', handleRoute(req =>
         user.update(getUserId(req), req.params.id, req.body)))
 
     api.delete('/users/:id', handleRoute(req =>
         user.remove(getUserId(req), req.params.id)))
+
+    api.get('/users/me', handleRoute(req =>
+        user.getCurrent(getUserId(req))))
 
     api.get('/users/:id', handleRoute(req =>
         user.find(req.params.id)))
@@ -119,6 +96,7 @@ export const apiRouter = () => {
         bet.findAllFromGame(req.params.id)))
 
     // Sessions
+    api.post('/sessions', handleRoute(login))
     api.delete('/sessions/current', handleRoute(logout))
 
     return api

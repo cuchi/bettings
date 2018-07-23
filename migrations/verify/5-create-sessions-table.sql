@@ -1,0 +1,5 @@
+BEGIN;
+
+SELECT 1 FROM sessions LIMIT 0;
+
+ROLLBACK;
