@@ -18,8 +18,6 @@ beforeAll(() => {
     return all([serverIsReady, populateDB, login])
 })
 
-afterAll(() => delay(1000))
-
 describe('Server', async () => {
     beforeEach(() => db.query('ROLLBACK; BEGIN TRANSACTION'))
     afterEach(() => db.query('ROLLBACK'))
@@ -58,13 +56,13 @@ describe('Server', async () => {
         const response = await agent
             .post(`${api}/users`)
             .send({
-                name: 'Sid',
-                email: 'sid1@kernel.org',
+                name: 'Jessie',
+                email: 'jessie@kernel.org',
                 password: 'root@123456' })
             .ok(T)
 
         expect(response.status).toBe(200)
-        expect(response.body.name).toBe('Sid')
+        expect(response.body.name).toBe('Jessie')
         expect(response.body.isAdmin).toBe(false)
     })
 
