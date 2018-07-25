@@ -1,0 +1,6 @@
+BEGIN;
+
+ALTER TABLE games DROP COLUMN mode;
+DROP TYPE game_mode;
+
+COMMIT;

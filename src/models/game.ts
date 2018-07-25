@@ -6,6 +6,7 @@ interface OpenGame {
     name: string,
     timeLimit: Date,
     score: number,
+    mode: 'open' | 'secret' | 'secret-till-end'
     createdBy: number,
     createdAt: Date,
     updatedAt: Date
@@ -42,6 +43,11 @@ const Game = database.define<GameInstance, GameAttributes>('game', {
         allowNull: false,
         references: { model: 'users' },
         field: 'created_by'
+    },
+    mode: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        defaultValue: 'open'
     },
     closedAt: {
         type: Sequelize.DATE,

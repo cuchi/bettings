@@ -1,6 +1,6 @@
 import { all } from 'bluebird'
 import { closestIndexTo } from 'date-fns'
-import { pluck } from 'ramda'
+import { pick, pluck } from 'ramda'
 import { Transaction } from 'sequelize'
 import db from '../database'
 import Bet from '../models/bet'
@@ -9,8 +9,12 @@ import User, { UserInstance } from '../models/user'
 import { NotFoundError, UnauthorizedError, ValidationError } from './errors'
 import { ensureIsAdmin } from './user'
 
-export const create = (userId: number, fields: any) =>
-    Game.create({ ...fields, createdBy: userId })
+const updatableFields = ['name', 'timeLimit', 'score', 'mode']
+
+export const create = (userId: number, fields: any) => {
+    const pickedFields = pick(updatableFields, fields)
+    return Game.create({ ...pickedFields, createdBy: userId })
+}
 
 export const remove = async (userId: number, id: number) => {
     const game = await Game.findOne({ where: { id } })
@@ -80,4 +84,5 @@ export const close = (userId: number, gameId: number, result: any) =>
     })
 
 export const findAll = () =>
-    Game.findAll({ attributes: ['id', 'name', 'timeLimit', 'createdAt'] })
+    Game.findAll({
+        attributes: ['id', 'name', 'score', 'mode', 'timeLimit', 'createdAt'] })

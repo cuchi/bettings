@@ -1,4 +1,4 @@
-import { all, delay } from 'bluebird'
+import { all } from 'bluebird'
 import fs from 'fs'
 import path from 'path'
 import { T } from 'ramda'

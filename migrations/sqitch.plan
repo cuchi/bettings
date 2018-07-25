@@ -6,3 +6,4 @@
 3-unique-bets 2018-07-16T18:41:10Z Paulo Henrique Cuchi <paulo.cuchi@gmail.com> # Create unique indexes for bets
 4-add-result-column 2018-07-17T21:54:24Z Paulo Henrique Cuchi <paulo.cuchi@gmail.com> # Add result column to the game table
 5-create-sessions-table 2018-07-19T20:00:51Z Paulo Henrique Cuchi <paulo.cuchi@gmail.com> # Create table for user sessions
+6-add-game-mode 2018-07-25T19:36:32Z Paulo Henrique Cuchi <paulo.cuchi@gmail.com> # Add game mode

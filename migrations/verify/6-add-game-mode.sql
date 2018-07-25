@@ -1,0 +1,5 @@
+BEGIN;
+
+SELECT mode FROM games LIMIT 0;
+
+ROLLBACK;

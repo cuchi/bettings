@@ -39,7 +39,7 @@ export class UnauthorizedError extends HttpError {
 }
 
 export const resolveError = (error: Error) => {
-    const validationFailed = error instanceof Sequelize.ValidationError
+    const validationFailed = error instanceof Sequelize.Error
 
     if (validationFailed) {
         return new ValidationError(error)
