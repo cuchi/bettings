@@ -44,7 +44,7 @@ const logout = async (req: Request) => {
     req.session.destroy(() => { /* noop */ })
 }
 
-function getUserId(req: Request) {
+function checkUser(req: Request) {
     const userId = path(['session', 'userId'], req)
     if (!userId) {
         throw new UnauthenticatedError()
@@ -63,34 +63,40 @@ export const apiRouter = () => {
         user.create(req.body)))
 
     api.patch('/users/:id', handleRoute(req =>
-        user.update(getUserId(req), req.params.id, req.body)))
+        user.update(checkUser(req), req.params.id, req.body)))
 
     api.delete('/users/:id', handleRoute(req =>
-        user.remove(getUserId(req), req.params.id)))
+        user.remove(checkUser(req), req.params.id)))
 
     api.get('/users/me', handleRoute(req =>
-        user.getCurrent(getUserId(req))))
+        user.getCurrent(checkUser(req))))
 
     api.get('/users/:id', handleRoute(req =>
         user.find(req.params.id)))
 
-    api.get('/users', handleRoute(user.findAll))
+    api.get('/users', handleRoute(req => {
+        checkUser(req)
+        return user.findAll()
+    }))
 
     // Games
-    api.get('/games', handleRoute(req => game.findAll()))
+    api.get('/games', handleRoute(req => {
+        checkUser(req)
+        return game.findAll()
+    }))
 
     api.post('/games', handleRoute(req =>
-        game.create(getUserId(req), req.body)))
+        game.create(checkUser(req), req.body)))
 
     api.delete('/games/:id', handleRoute(req =>
-        game.remove(getUserId(req), req.params.id)))
+        game.remove(checkUser(req), req.params.id)))
 
     api.put('/games/:id', handleRoute(req =>
-        game.close(getUserId(req), req.params.id, req.body.result)))
+        game.close(checkUser(req), req.params.id, req.body.result)))
 
     // Bets
     api.post('/games/:id/bets', handleRoute(req =>
-        bet.place(getUserId(req), req.params.id, req.body.value)))
+        bet.place(checkUser(req), req.params.id, req.body.value)))
 
     api.get('/games/:id/bets', handleRoute(req =>
         bet.findAllFromGame(req.params.id)))

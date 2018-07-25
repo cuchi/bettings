@@ -5,7 +5,7 @@ TRUNCATE TABLE users CASCADE;
 TRUNCATE TABLE games CASCADE;
 TRUNCATE TABLE bets CASCADE;
 
-CREATE FUNCTION get_user_id(email text) RETURNS int
+CREATE OR REPLACE FUNCTION get_user_id(email text) RETURNS int
 AS $$
 DECLARE
     user_id int;

@@ -71,7 +71,7 @@ describe('Server', async () => {
             .get(`${api}/users`)
             .ok(T)
 
-        expect(response.status).toBe(403)
+        expect(response.status).toBe(401)
     })
 
     test('Should get the users list', async () => {
