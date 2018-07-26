@@ -11,12 +11,12 @@ import { ensureIsAdmin } from './user'
 
 const updatableFields = ['name', 'timeLimit', 'score', 'mode']
 
-export const create = (userId: number, fields: any) => {
+export async function create(userId: number, fields: any) {
     const pickedFields = pick(updatableFields, fields)
     return Game.create({ ...pickedFields, createdBy: userId })
 }
 
-export const remove = async (userId: number, id: number) => {
+export async function remove(userId: number, id: number) {
     const game = await Game.findOne({ where: { id } })
 
     if (!game) {

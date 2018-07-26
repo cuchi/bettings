@@ -13,7 +13,7 @@ const saltRounds = 10
 
 const updatableFields = ['name', 'email', 'password']
 
-export const ensureIsAdmin = async (id: number, transaction?: Transaction) => {
+export async function ensureIsAdmin(id: number, transaction?: Transaction) {
     const currentUser = await User.findOne({
         attributes: ['isAdmin'],
         where: { id },
@@ -24,7 +24,7 @@ export const ensureIsAdmin = async (id: number, transaction?: Transaction) => {
     }
 }
 
-export const create = async (inputValues: any) => {
+export async function create(inputValues: any) {
     if (!inputValues.password) {
         throw new ValidationError('Missing password!')
     }
@@ -41,7 +41,7 @@ export const create = async (inputValues: any) => {
     return dissoc('password', createdUser.toJSON())
 }
 
-export const authenticate = async (email: string, password: string) => {
+export async function authenticate(email: string, password: string) {
     const user = await User.findOne({
         attributes: ['id', `password`],
         where: { email } })
@@ -80,7 +80,7 @@ export async function update(
     }
 }
 
-export const remove = async (currentUserId: number, id: number) => {
+export async function remove(currentUserId: number, id: number) {
     await ensureIsAdmin(currentUserId)
 
     if ((await User.destroy(({ where: { id } }))) === 0) {
@@ -88,7 +88,7 @@ export const remove = async (currentUserId: number, id: number) => {
     }
 }
 
-export const find = async (id: number) => {
+export async function find(id: number) {
     const user = await User.findOne({ where: { id } })
 
     if (!user) {
