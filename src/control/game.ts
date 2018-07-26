@@ -83,6 +83,9 @@ export const close = (userId: number, gameId: number, result: any) =>
         return all([updateScore(game, result, transaction), updateGame])
     })
 
-export const findAll = () =>
-    Game.findAll({
-        attributes: ['id', 'name', 'score', 'mode', 'timeLimit', 'createdAt'] })
+const publicAttrs = [
+    'id', 'name', 'score', 'mode', 'result', 'timeLimit', 'closedAt',
+    'createdAt'
+]
+
+export const findAll = () => Game.findAll({ attributes: publicAttrs })

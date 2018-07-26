@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import { evolve, nAry, pick, values } from 'ramda'
+import { dissoc, evolve, pick, values } from 'ramda'
 import { Transaction } from 'sequelize'
 import User from '../models/user'
 import {
@@ -36,7 +36,9 @@ export const create = async (inputValues: any) => {
         isAdmin: isFirstUser,
         password: await bcrypt.hash(inputValues.password, saltRounds) }
 
-    return User.create(user)
+    const createdUser = await User.create(user)
+
+    return dissoc('password', createdUser.toJSON())
 }
 
 export const authenticate = async (email: string, password: string) => {
@@ -98,4 +100,6 @@ export const find = async (id: number) => {
 
 export const getCurrent = (id: number) => User.findOne({ where: { id } })
 
-export const findAll = nAry(0, User.findAll.bind(User))
+const publicAttrs = ['id', 'name', 'email', 'score', 'isAdmin', 'createdAt']
+
+export const findAll = () => User.findAll({ attributes: publicAttrs })
