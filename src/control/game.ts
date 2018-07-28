@@ -13,6 +13,7 @@ const updatableFields = ['name', 'timeLimit', 'score', 'mode']
 
 export async function create(userId: number, fields: any) {
     const pickedFields = pick(updatableFields, fields)
+
     return Game.create({ ...pickedFields, createdBy: userId })
 }
 
@@ -28,6 +29,12 @@ export async function remove(userId: number, id: number) {
     }
 
     return game.destroy()
+}
+
+export function isClosed(game: Game): game is ClosedGame {
+    const closedGame = game as ClosedGame
+
+    return closedGame.closedAt != null && closedGame.result != null
 }
 
 async function updateScore(
@@ -68,7 +75,7 @@ export const close = (userId: number, gameId: number, result: any) =>
             throw new NotFoundError()
         }
 
-        if ((game as ClosedGame).closedAt) {
+        if (isClosed(game)) {
             throw new ValidationError('The game is already closed!')
         }
 

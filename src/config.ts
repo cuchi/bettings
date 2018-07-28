@@ -59,4 +59,6 @@ const configFromEnv = () => {
 
 const overwrites: Partial<Config> = configFromEnv()
 
-export default { ...defaults, ...overwrites } as Config
+const resultConfig: Config = { ...defaults, ...overwrites }
+
+export default resultConfig

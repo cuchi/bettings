@@ -35,7 +35,6 @@
         "prefer-switch": [true, {"min-cases": 2}],
         "no-boolean-literal-compare": true,
         "file-name-casing": [true, "kebab-case"],
-        "strict-type-predicates": true,
         "prefer-object-spread": true,
         "no-void-expression": true,
         "no-string-literal": true,

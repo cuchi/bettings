@@ -20,10 +20,12 @@ function handleRoute(fn: HandlerFn) {
             if (error instanceof HttpError) {
                 const { name, message } = error
                 log.warn(error.message)
-                res.status(Number(error.status)).json({ name, message })
+                res.status(Number(error.status))
+                    .json({ name, message })
             } else {
                 log.error(error.stack || error.message)
-                res.status(500).json({ name: 'Internal Server Error' })
+                res.status(500)
+                    .json({ name: 'Internal Server Error' })
             }
         }
     }
@@ -49,6 +51,7 @@ function checkUser(req: Request) {
     if (!userId) {
         throw new UnauthenticatedError()
     }
+
     return Number(userId)
 }
 
@@ -76,12 +79,14 @@ export const apiRouter = () => {
 
     api.get('/users', handleRoute(req => {
         checkUser(req)
+
         return user.findAll()
     }))
 
     // Games
     api.get('/games', handleRoute(req => {
         checkUser(req)
+
         return game.findAll()
     }))
 
